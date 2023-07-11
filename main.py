@@ -30,7 +30,7 @@ async def api(request: Request):
 def main():
     global generator
     args = get_parser().parse_args()
-    generator = WizardCoder4bitGPTQ(pretrained=args.pretrained, device_map='auto')
+    generator = WizardCoder4bitGPTQ(pretrained=args.pretrained)
     uvicorn.run(app, host=args.host, port=args.port)
 
 

@@ -7,6 +7,16 @@ from tqdm import tqdm
 app = typer.Typer()
 
 def download_file(url, path):
+    '''
+    This function will download a single file from a URL and save it to a specified path.
+
+    Args:
+        url (str): The URL of the file to download
+        path (str): The path to save the downloaded file
+
+    Returns:
+        None
+    '''
     response = requests.get(url, stream=True)
     total_size_in_bytes = int(response.headers.get('content-length', 0))
     block_size = 1024 #1 Kbyte
@@ -20,6 +30,17 @@ def download_file(url, path):
     progress_bar.close()
 
 def download_model(model_name, destination_folder="models"):
+    '''
+    This function will download a model into: models/{model_name}/{file}
+
+    Args:
+        model_name (str): The name of the model to download
+        destination_folder (str): The folder to download the model into (default: models)
+
+    Returns:
+        None
+    '''
+    
     # Define the base URL and headers for the Hugging Face API
     base_url = f"https://huggingface.co/{model_name}/resolve/main"
     headers = {"User-Agent": "Hugging Face Python"}

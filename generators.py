@@ -117,7 +117,7 @@ class WizardCoder4bitGPTQ(GeneratorBase):
         self.device: str = device
         self.use_triton: bool = use_triton
         self.tokenizer = AutoTokenizer.from_pretrained(pretrained, use_fast=True)
-        self.model = AutoGPTQForCausalLM.from_pretrained(
+        self.model = AutoGPTQForCausalLM.from_quantized(
             pretrained,
             use_triton=use_triton,
             use_safetensors=True,
@@ -128,17 +128,6 @@ class WizardCoder4bitGPTQ(GeneratorBase):
         self.pipeline = pipeline(
             "text-generation", model=self.model, tokenizer=self.tokenizer
         )
-        self.default_parameter: dict = dict(
-            do_sample=True,
-            top_p=0.95,
-            top_k=4,
-            pad_token_id=self.tokenizer.eos_token_id,
-            temperature=0.2,
-            num_return_sequences=1,
-            eos_token_id=self.tokenizer.eos_token_id,
-        )
-        self.generation_config = GenerationConfig.from_pretrained(pretrained)
-        self.generation_config.pad_token_id = self.pipe.tokenizer.eos_token_id
 
     def generate(self, query: str, parameters: dict) -> str:
         outputs = self.pipeline(
